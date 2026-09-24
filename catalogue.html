@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalogue des modules — FHIR Académie</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Accueil</a>
+      <a href="catalogue.html" class="active">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <h1>Le catalogue des modules FHIR</h1>
+    <p>Des formations progressives, en français, pour comprendre et implémenter FHIR : de la découverte du standard à la mise en production d'un serveur.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="catalogue-layout">
+    <aside class="filters">
+      <h4>Niveau</h4>
+      <div class="filter-group">
+        <label class="filter-option"><input type="checkbox" class="level-filter" value="Débutant" checked> Débutant</label>
+        <label class="filter-option"><input type="checkbox" class="level-filter" value="Intermédiaire" checked> Intermédiaire</label>
+        <label class="filter-option"><input type="checkbox" class="level-filter" value="Avancé" checked> Avancé</label>
+      </div>
+      <h4>Prix</h4>
+      <div class="filter-group">
+        <label class="filter-option"><input type="checkbox" class="price-filter" value="free" checked> Gratuit</label>
+        <label class="filter-option"><input type="checkbox" class="price-filter" value="paid" checked> Payant</label>
+      </div>
+    </aside>
+    <main class="catalogue-results">
+      <div class="results-bar">
+        <span id="resultsCount">6 modules</span>
+        <span>Triés par : populaires</span>
+      </div>
+      <div class="course-grid" id="catalogueGrid"></div>
+    </main>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+      <p>La référence francophone pour apprendre et implémenter FHIR.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <a href="module.html?id=fhir-101">Module gratuit</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 FHIR Académie. FHIR® est une marque déposée de HL7. Ce site n'est pas affilié à HL7.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+function renderCatalogue(){
+  const activeLevels = [...document.querySelectorAll(".level-filter:checked")].map(el => el.value);
+  const activePrices = [...document.querySelectorAll(".price-filter:checked")].map(el => el.value);
+  const filtered = COURSES.filter(c => {
+    if(!activeLevels.includes(c.level)) return false;
+    const priceType = c.price === 0 ? "free" : "paid";
+    if(!activePrices.includes(priceType)) return false;
+    return true;
+  });
+  document.getElementById("catalogueGrid").innerHTML = filtered.map(courseCardHTML).join("") ||
+    '<p style="color:#94a3b8;padding:40px 0;">Aucun module ne correspond à ces filtres.</p>';
+  document.getElementById("resultsCount").textContent = filtered.length + " module" + (filtered.length > 1 ? "s" : "");
+}
+document.addEventListener("DOMContentLoaded", () => {
+  renderCatalogue();
+  document.querySelectorAll(".level-filter, .price-filter").forEach(el => el.addEventListener("change", renderCatalogue));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leçon — FHIR Académie</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Accueil</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="lesson-layout" id="lessonLayout"></div>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+function getParam(name){ return new URLSearchParams(window.location.search).get(name); }
+
+function renderLesson(){
+  const id = getParam("id") || "fhir-101";
+  const course = COURSES.find(c => c.id === id) || COURSES[0];
+  const firstLesson = course.curriculum[0].lessons[0];
+
+  const sidebarHTML = course.curriculum.map(sec => `
+    <div style="margin-bottom:18px;">
+      <div style="font-weight:700;color:#0b1f3a;font-size:.85rem;margin-bottom:8px;">${sec.section}</div>
+      ${sec.lessons.map((l, i) => `
+        <div style="display:flex;justify-content:space-between;padding:8px 10px;border-radius:8px;font-size:.85rem;
+          ${i===0 && sec===course.curriculum[0] ? 'background:#eef4ff;color:#1b4b8f;font-weight:600;' : 'color:#475569;'}">
+          <span>${l.free ? "▶️" : "🔒"} ${l.name}</span>
+          <span>${l.duration}</span>
+        </div>`).join("")}
+    </div>`).join("");
+
+  document.getElementById("lessonLayout").innerHTML = `
+    <div class="lesson-content">
+      <div class="breadcrumb"><a href="module.html?id=${course.id}">${course.title}</a> / Aperçu gratuit</div>
+      <h1>${firstLesson.name}</h1>
+      <div class="video-placeholder">▶️</div>
+      <div class="lesson-text">
+        <p>Bienvenue dans ce module sur <strong>FHIR</strong> (Fast Healthcare Interoperability Resources). Dans cette
+        leçon d'introduction, nous posons les bases du standard qui structure aujourd'hui l'essentiel des échanges
+        de données de santé numérique, en France comme à l'international.</p>
+
+        <h2>Ce que vous allez apprendre</h2>
+        <p>FHIR repose sur une idée simple : découper l'information de santé en petites unités appelées
+        <em>ressources</em> (Patient, Observation, Condition, Encounter...), échangeables via une API REST standard.
+        Voici un exemple minimal de ressource Patient :</p>
+
+        <pre><code>{
+  "resourceType": "Patient",
+  "id": "exemple-01",
+  "name": [{ "family": "Moreau", "given": ["Camille"] }],
+  "gender": "female",
+  "birthDate": "1988-04-12"
+}</code></pre>
+
+        <p>Chaque ressource a une structure définie par une <strong>StructureDefinition</strong>, ce qui permet
+        à deux systèmes différents de se comprendre sans négociation préalable — c'est tout l'enjeu de
+        l'interopérabilité.</p>
+
+        <div class="quiz-box">
+          <h3>🧠 Quiz rapide</h3>
+          <p style="margin-bottom:14px;color:#475569;">Quel élément FHIR décrit la structure attendue d'une ressource ?</p>
+          <div class="quiz-option">A. Un Bundle</div>
+          <div class="quiz-option">B. Une StructureDefinition</div>
+          <div class="quiz-option">C. Un Endpoint</div>
+        </div>
+      </div>
+      <div class="lesson-nav-footer">
+        <a href="module.html?id=${course.id}" class="btn btn-outline">← Retour au module</a>
+        ${course.free
+          ? `<button class="btn btn-primary">Leçon suivante →</button>`
+          : `<a href="module.html?id=${course.id}" class="btn btn-primary">Débloquer le module complet →</a>`
+        }
+      </div>
+    </div>
+    <aside class="lesson-sidebar">
+      <h4>${course.title}</h4>
+      ${sidebarHTML}
+    </aside>
+  `;
+}
+
+document.addEventListener("DOMContentLoaded", renderLesson);
+</script>
+</body>
+</html>

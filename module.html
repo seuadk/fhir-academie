@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Module — FHIR Académie</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Accueil</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="module-layout" id="moduleLayout">
+    <!-- Rendu dynamiquement par JS -->
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+      <p>La référence francophone pour apprendre et implémenter FHIR.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <a href="module.html?id=fhir-101">Module gratuit</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 FHIR Académie. FHIR® est une marque déposée de HL7. Ce site n'est pas affilié à HL7.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+function getParam(name){
+  return new URLSearchParams(window.location.search).get(name);
+}
+
+function renderModule(){
+  const id = getParam("id") || "fhir-101";
+  const course = COURSES.find(c => c.id === id) || COURSES[0];
+  document.title = course.title + " — FHIR Académie";
+
+  const curriculumHTML = course.curriculum.map(sec => `
+    <div class="curriculum-section">
+      <div class="curriculum-head">${sec.section}</div>
+      ${sec.lessons.map(l => `
+        <div class="lesson-row">
+          <span class="lesson-name">
+            ${l.free ? "▶️" : "<span class='lock'>🔒</span>"} ${l.name}
+            ${l.free ? "<span class='free-badge'>APERÇU GRATUIT</span>" : ""}
+          </span>
+          <span>${l.duration}</span>
+        </div>`).join("")}
+    </div>`).join("");
+
+  const priceBlock = course.oldPrice
+    ? `<span class="old">${formatPrice(course.oldPrice)}</span>${formatPrice(course.price)}`
+    : formatPrice(course.price);
+
+  const owned = false; // point d'intégration : vérifier l'accès réel de l'utilisateur connecté
+  const inCart = isInCart(course.id);
+
+  document.getElementById("moduleLayout").innerHTML = `
+    <div class="module-main">
+      <div class="breadcrumb"><a href="catalogue.html">Catalogue</a> / ${course.title}</div>
+      <h1>${course.title}</h1>
+      <div class="module-tags">
+        <span class="tag">${course.level}</span>
+        ${course.tags.map(t => `<span class="tag">${t}</span>`).join("")}
+        <span class="tag">⏱ ${course.duration}</span>
+        <span class="tag">📚 ${course.lessons} leçons</span>
+      </div>
+      <p class="module-desc">${course.description}</p>
+      <h3 style="color:#0b1f3a;margin-bottom:16px;">Programme du module</h3>
+      <div class="curriculum">${curriculumHTML}</div>
+    </div>
+    <aside class="sidebar-card">
+      <div class="sidebar-price">${priceBlock}</div>
+      <div class="sidebar-note">Accès à vie · Certificat inclus</div>
+      ${course.free
+        ? `<a href="lecon.html?id=${course.id}" class="btn btn-primary btn-block btn-lg">Commencer gratuitement</a>`
+        : `<button class="btn btn-primary btn-block btn-lg" id="addToCartBtn">${inCart ? "Déjà dans le panier ✓" : "Ajouter au panier"}</button>
+           <a href="lecon.html?id=${course.id}" class="btn btn-outline btn-block" style="margin-top:10px;">Voir l'aperçu gratuit</a>`
+      }
+      <div class="included-list">
+        <div>✅ <span>${course.lessons} leçons vidéo + textuelles</span></div>
+        <div>✅ <span>Quiz d'évaluation par section</span></div>
+        <div>✅ <span>Exercices pratiques sur ressources FHIR réelles</span></div>
+        <div>✅ <span>Certificat de complétion téléchargeable</span></div>
+        <div>✅ <span>Mises à jour incluses (nouvelles versions FHIR)</span></div>
+      </div>
+    </aside>
+  `;
+
+  const addBtn = document.getElementById("addToCartBtn");
+  if(addBtn){
+    addBtn.addEventListener("click", () => {
+      addToCart(course.id);
+      addBtn.textContent = "Ajouté ✓ Voir le panier";
+      addBtn.onclick = () => window.location.href = "panier.html";
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", renderModule);
+</script>
+</body>
+</html>

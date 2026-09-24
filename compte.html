@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon compte — FHIR Académie</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Accueil</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html" class="active">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <h1>Bonjour, Camille 👋</h1>
+    <p>Retrouvez vos modules, votre progression et vos certificats.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="account-layout">
+    <nav class="account-nav">
+      <a href="#" class="active" data-tab="mes-modules">📚 Mes modules</a>
+      <a href="#" data-tab="certificats">📜 Mes certificats</a>
+      <a href="#" data-tab="profil">👤 Mon profil</a>
+      <a href="#" data-tab="facturation">🧾 Facturation</a>
+      <a href="#" onclick="alert('Point d\'intégration : déconnexion réelle à connecter à votre système d\'authentification.')">🚪 Se déconnecter</a>
+    </nav>
+
+    <main>
+      <div class="account-card" id="tab-mes-modules">
+        <h3 style="color:#0b1f3a;margin-bottom:18px;">Mes modules en cours</h3>
+        <div id="enrolledList"></div>
+      </div>
+
+      <div class="account-card" id="tab-certificats" style="display:none;">
+        <h3 style="color:#0b1f3a;margin-bottom:18px;">Mes certificats</h3>
+        <p style="color:#94a3b8;">Terminez un module à 100% pour débloquer son certificat de complétion téléchargeable.</p>
+      </div>
+
+      <div class="account-card" id="tab-profil" style="display:none;">
+        <h3 style="color:#0b1f3a;margin-bottom:18px;">Informations du profil</h3>
+        <div class="form-row"><label>Nom complet</label><input type="text" value="Camille Moreau"></div>
+        <div class="form-row"><label>Adresse email</label><input type="email" value="camille.moreau@exemple.fr"></div>
+        <div class="form-row"><label>Entreprise / organisation</label><input type="text" value=""></div>
+        <button class="btn btn-primary">Enregistrer les modifications</button>
+      </div>
+
+      <div class="account-card" id="tab-facturation" style="display:none;">
+        <h3 style="color:#0b1f3a;margin-bottom:18px;">Historique de facturation</h3>
+        <p style="color:#94a3b8;">Aucune facture pour le moment. Vos achats de modules apparaîtront ici avec leur facture PDF téléchargeable.</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+      <p>La référence francophone pour apprendre et implémenter FHIR.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <a href="module.html?id=fhir-101">Module gratuit</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 FHIR Académie. FHIR® est une marque déposée de HL7. Ce site n'est pas affilié à HL7.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+function renderEnrolled(){
+  // Démo : on simule un module en cours (le module gratuit). Point d'intégration : remplacer par les vraies inscriptions utilisateur.
+  const demo = [{ course: COURSES[0], progress: 35 }];
+  const list = document.getElementById("enrolledList");
+  if(demo.length === 0){
+    list.innerHTML = `<p style="color:#94a3b8;">Vous n'êtes inscrit à aucun module pour le moment. <a href="catalogue.html" style="color:#2563eb;">Découvrir le catalogue →</a></p>`;
+    return;
+  }
+  list.innerHTML = demo.map(d => `
+    <div class="enrolled-course">
+      <div class="enrolled-thumb">${d.course.icon}</div>
+      <div class="enrolled-info">
+        <h4>${d.course.title}</h4>
+        <div class="progress-bar-track"><div class="progress-bar-fill" style="width:${d.progress}%;"></div></div>
+      </div>
+      <a href="lecon.html?id=${d.course.id}" class="btn btn-outline btn-sm">Continuer</a>
+    </div>`).join("");
+}
+
+document.querySelectorAll(".account-nav a[data-tab]").forEach(link => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    document.querySelectorAll(".account-nav a").forEach(a => a.classList.remove("active"));
+    link.classList.add("active");
+    document.querySelectorAll("main .account-card").forEach(c => c.style.display = "none");
+    document.getElementById("tab-" + link.dataset.tab).style.display = "block";
+  });
+});
+
+document.addEventListener("DOMContentLoaded", renderEnrolled);
+</script>
+</body>
+</html>

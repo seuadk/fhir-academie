@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À propos — FHIR Académie</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Accueil</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html" class="active">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <h1>Notre mission</h1>
+    <p>Rendre le standard FHIR accessible à tous les professionnels francophones de la santé numérique.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="about-content">
+    <p>FHIR Académie est né d'un constat simple : la très grande majorité des ressources pour apprendre FHIR
+    (Fast Healthcare Interoperability Resources) sont en anglais, très techniques, et pensées pour des
+    architectes déjà expérimentés. Pourtant, de plus en plus d'équipes francophones — développeurs, chefs
+    de projet DSI, professionnels de santé, data analysts — doivent comprendre et manipuler FHIR au quotidien.</p>
+
+    <h2>Notre approche pédagogique</h2>
+    <p>Chaque module est construit autour de cas concrets tirés du terrain de santé francophone : dossier
+    patient, résultats de laboratoire, prescriptions, interopérabilité avec les systèmes nationaux. Nous
+    combinons leçons courtes, exercices pratiques sur de vraies ressources FHIR, et quiz pour ancrer les
+    connaissances.</p>
+
+    <h2>Pour qui ?</h2>
+    <p>Nos modules s'adressent aux développeurs et architectes qui intègrent des API de santé, aux équipes
+    SI hospitalières qui pilotent une migration vers FHIR, ainsi qu'aux professionnels non-techniques qui
+    ont besoin de comprendre les enjeux d'interopérabilité pour piloter un projet.</p>
+
+    <h2>L'équipe</h2>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <h4 style="color:#0b1f3a;">Fondateur</h4>
+        <p style="color:#94a3b8;font-size:.9rem;">Architecte interopérabilité santé, 10+ ans d'expérience FHIR</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <h4 style="color:#0b1f3a;">Responsable pédagogique</h4>
+        <p style="color:#94a3b8;font-size:.9rem;">Spécialiste conception de formations techniques</p>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar"></div>
+        <h4 style="color:#0b1f3a;">Conseiller clinique</h4>
+        <p style="color:#94a3b8;font-size:.9rem;">Médecin, expert des terminologies de santé</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+      <p>La référence francophone pour apprendre et implémenter FHIR.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <a href="module.html?id=fhir-101">Module gratuit</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 FHIR Académie. FHIR® est une marque déposée de HL7. Ce site n'est pas affilié à HL7.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

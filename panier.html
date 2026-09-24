@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mon panier — FHIR Académie</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html">Accueil</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="container">
+    <h1>Mon panier</h1>
+    <p>Vérifiez votre sélection avant de finaliser votre commande.</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="cart-layout" id="cartLayout"></div>
+</div>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+      <p>La référence francophone pour apprendre et implémenter FHIR.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <a href="module.html?id=fhir-101">Module gratuit</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 FHIR Académie. FHIR® est une marque déposée de HL7. Ce site n'est pas affilié à HL7.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+<script>
+function renderCart(){
+  const courses = getCartCourses();
+  const layout = document.getElementById("cartLayout");
+
+  if(courses.length === 0){
+    layout.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1;">
+        <div style="font-size:2.5rem;">🛒</div>
+        <h3 style="color:#0b1f3a;margin-top:12px;">Votre panier est vide</h3>
+        <p>Parcourez le catalogue pour trouver votre prochain module FHIR.</p>
+        <a href="catalogue.html" class="btn btn-primary">Voir le catalogue</a>
+      </div>`;
+    return;
+  }
+
+  const itemsHTML = courses.map(c => `
+    <div class="cart-item">
+      <div class="cart-item-thumb">${c.icon}</div>
+      <div class="cart-item-info">
+        <h4>${c.title}</h4>
+        <p>${c.level} · ${c.duration} · ${c.lessons} leçons</p>
+      </div>
+      <span class="cart-item-price">${formatPrice(c.price)}</span>
+      <button class="remove-btn" data-id="${c.id}">Retirer</button>
+    </div>`).join("");
+
+  const total = getCartTotal();
+  const tva = total * 0.2;
+  const totalTTC = total + tva;
+
+  layout.innerHTML = `
+    <div>
+      <h3 style="color:#0b1f3a;margin-bottom:10px;">${courses.length} module${courses.length > 1 ? "s" : ""} dans le panier</h3>
+      ${itemsHTML}
+    </div>
+    <aside class="sidebar-card">
+      <h3 style="color:#0b1f3a;margin-bottom:18px;">Résumé de la commande</h3>
+      <div class="summary-row"><span>Sous-total HT</span><span>${total.toFixed(2)} €</span></div>
+      <div class="summary-row"><span>TVA (20%)</span><span>${tva.toFixed(2)} €</span></div>
+      <div class="summary-row total"><span>Total TTC</span><span>${totalTTC.toFixed(2)} €</span></div>
+      <button class="btn btn-primary btn-block btn-lg" style="margin-top:20px;" id="checkoutBtn">Procéder au paiement</button>
+      <p class="sidebar-note" style="text-align:center;margin-top:12px;">Paiement sécurisé · Accès immédiat après achat</p>
+    </aside>
+  `;
+
+  document.querySelectorAll(".remove-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      removeFromCart(btn.dataset.id);
+      renderCart();
+    });
+  });
+
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  if(checkoutBtn){
+    checkoutBtn.addEventListener("click", () => {
+      // Point d'intégration : connecter ici un vrai fournisseur de paiement (Stripe Checkout, etc.)
+      alert("Point d'intégration paiement : connectez ici Stripe (ou équivalent) pour un paiement réel. Simulation : commande validée !");
+    });
+  }
+}
+
+document.addEventListener("DOMContentLoaded", renderCart);
+</script>
+</body>
+</html>

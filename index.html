@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FHIR Académie — Formations FHIR en français</title>
+<meta name="description" content="Modules e-learning en français pour apprendre le standard FHIR : ressources cliniques, API REST, sécurité, interopérabilité.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+    <nav class="main-nav" id="mainNav">
+      <a href="index.html" class="active">Accueil</a>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="module.html?id=fhir-101">Exemple de module</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </nav>
+    <div class="header-actions">
+      <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
+      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <span class="badge">🇫🇷 100% en français</span>
+      <h1>Maîtrisez le standard <span class="accent">FHIR</span><br>à votre rythme</h1>
+      <p class="hero-sub">
+        Des modules e-learning clairs et pratiques pour développeurs, architectes et professionnels de santé
+        qui veulent comprendre et implémenter l'interopérabilité FHIR — sans jargon inutile.
+      </p>
+      <div class="hero-cta">
+        <a href="catalogue.html" class="btn btn-primary btn-lg">Découvrir les modules</a>
+        <a href="module.html?id=fhir-101" class="btn btn-outline btn-lg">Essayer une leçon gratuite</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>12</strong><span>modules disponibles</span></div>
+        <div><strong>40+</strong><span>heures de contenu</span></div>
+        <div><strong>100%</strong><span>en français</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="code-card">
+        <div class="code-card-head">
+          <span></span><span></span><span></span>
+          <span class="code-title">Patient.json</span>
+        </div>
+        <pre><code>{
+  "resourceType": "Patient",
+  "id": "exemple-01",
+  "name": [{
+    "family": "Moreau",
+    "given": ["Camille"]
+  }],
+  "gender": "female",
+  "birthDate": "1988-04-12"
+}</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="logos-strip">
+  <div class="container">
+    <p>Conçu pour les équipes qui travaillent avec :</p>
+    <div class="logos-row">
+      <span>Dossier Patient Informatisé</span>
+      <span>Interopérabilité HL7®</span>
+      <span>API santé</span>
+      <span>Systèmes hospitaliers</span>
+      <span>Startups e-santé</span>
+    </div>
+  </div>
+</section>
+
+<section class="section why">
+  <div class="container">
+    <h2 class="section-title">Pourquoi FHIR Académie ?</h2>
+    <p class="section-sub">La majorité des ressources FHIR sont en anglais et très techniques. Nous rendons FHIR accessible, en français, avec des cas concrets du terrain de santé francophone.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🇫🇷</div>
+        <h3>Contenu en français</h3>
+        <p>Vocabulaire clair, exemples francophones, sans traduction automatique approximative.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧩</div>
+        <h3>Pratique avant tout</h3>
+        <p>Chaque module inclut des exercices sur de vraies ressources FHIR (Patient, Observation, Encounter…).</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📜</div>
+        <h3>Certificat de complétion</h3>
+        <p>Un certificat téléchargeable à la fin de chaque parcours, à valoriser auprès de votre employeur.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⏱️</div>
+        <h3>100% à votre rythme</h3>
+        <p>Accès illimité une fois le module acheté. Reprenez où vous vous êtes arrêté, sur tout appareil.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section catalogue-preview">
+  <div class="container">
+    <div class="section-head-row">
+      <div>
+        <h2 class="section-title">Nos modules les plus suivis</h2>
+        <p class="section-sub">Du niveau débutant à l'implémentation avancée.</p>
+      </div>
+      <a href="catalogue.html" class="link-arrow">Voir tout le catalogue →</a>
+    </div>
+    <div class="course-grid" id="featuredCourses"></div>
+  </div>
+</section>
+
+<section class="section testimonials">
+  <div class="container">
+    <h2 class="section-title">Ce qu'en disent les apprenants</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p>« Enfin une formation FHIR compréhensible sans être ingénieur HL7 depuis 10 ans. Le module API REST m'a fait gagner des semaines. »</p>
+        <div class="testimonial-author">— Élodie R., développeuse e-santé</div>
+      </div>
+      <div class="testimonial-card">
+        <p>« Les exemples cliniques concrets font toute la différence. Je recommande à toute équipe DSI qui migre vers FHIR. »</p>
+        <div class="testimonial-author">— Karim B., architecte SI hospitalier</div>
+      </div>
+      <div class="testimonial-card">
+        <p>« Pédagogie progressive, quiz utiles, et le certificat a été reconnu par mon employeur. »</p>
+        <div class="testimonial-author">— Sophie L., data analyst santé</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="container cta-banner-inner">
+    <div>
+      <h2>Prêt à comprendre FHIR une fois pour toutes ?</h2>
+      <p>Commencez gratuitement avec notre module d'introduction, sans carte bancaire.</p>
+    </div>
+    <a href="module.html?id=fhir-101" class="btn btn-primary btn-lg">Commencer gratuitement</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a href="index.html" class="logo">FHIR<span>Académie</span></a>
+      <p>La référence francophone pour apprendre et implémenter FHIR.</p>
+    </div>
+    <div>
+      <h4>Navigation</h4>
+      <a href="catalogue.html">Catalogue</a>
+      <a href="a-propos.html">À propos</a>
+      <a href="compte.html">Mon compte</a>
+    </div>
+    <div>
+      <h4>Ressources</h4>
+      <a href="module.html?id=fhir-101">Module gratuit</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
+    <div>
+      <h4>Légal</h4>
+      <a href="#">Mentions légales</a>
+      <a href="#">CGV</a>
+      <a href="#">Politique de confidentialité</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© 2026 FHIR Académie. FHIR® est une marque déposée de HL7. Ce site n'est pas affilié à HL7.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
