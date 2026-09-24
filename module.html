@@ -20,7 +20,7 @@
     </nav>
     <div class="header-actions">
       <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
-      <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <span id="authHeaderLink"></span>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
     </div>
   </div>
@@ -65,6 +65,7 @@
 <script src="js/data.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/main.js"></script>
+<script src="js/auth.js"></script>
 <script>
 function getParam(name){
   return new URLSearchParams(window.location.search).get(name);

@@ -21,6 +21,7 @@
     <div class="header-actions">
       <a href="panier.html" class="cart-link">🛒 <span id="cartCount">0</span></a>
       <button class="btn btn-primary" onclick="window.location.href='catalogue.html'">Voir le catalogue</button>
+      <span id="authHeaderLink"></span>
       <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
     </div>
   </div>
@@ -28,7 +29,7 @@
 
 <section class="page-hero">
   <div class="container">
-    <h1>Bonjour, Camille 👋</h1>
+    <h1 id="welcomeTitle">Bonjour 👋</h1>
     <p>Retrouvez vos modules, votre progression et vos certificats.</p>
   </div>
 </section>
@@ -40,7 +41,7 @@
       <a href="#" data-tab="certificats">📜 Mes certificats</a>
       <a href="#" data-tab="profil">👤 Mon profil</a>
       <a href="#" data-tab="facturation">🧾 Facturation</a>
-      <a href="#" onclick="alert('Point d\'intégration : déconnexion réelle à connecter à votre système d\'authentification.')">🚪 Se déconnecter</a>
+      <a href="#" onclick="logout()">🚪 Se déconnecter</a>
     </nav>
 
     <main>
@@ -56,8 +57,8 @@
 
       <div class="account-card" id="tab-profil" style="display:none;">
         <h3 style="color:#0b1f3a;margin-bottom:18px;">Informations du profil</h3>
-        <div class="form-row"><label>Nom complet</label><input type="text" value="Camille Moreau"></div>
-        <div class="form-row"><label>Adresse email</label><input type="email" value="camille.moreau@exemple.fr"></div>
+        <div class="form-row"><label>Nom complet</label><input type="text" id="profileName" value=""></div>
+        <div class="form-row"><label>Adresse email</label><input type="email" id="profileEmail" value=""></div>
         <div class="form-row"><label>Entreprise / organisation</label><input type="text" value=""></div>
         <button class="btn btn-primary">Enregistrer les modifications</button>
       </div>
@@ -103,7 +104,20 @@
 <script src="js/data.js"></script>
 <script src="js/cart.js"></script>
 <script src="js/main.js"></script>
+<script src="js/auth.js"></script>
 <script>
+function requireSessionOrRedirect(){
+  const session = getSession();
+  if(!session){
+    window.location.href = "connexion.html";
+    return null;
+  }
+  document.getElementById("welcomeTitle").textContent = "Bonjour, " + session.fullName.split(" ")[0] + " 👋";
+  document.getElementById("profileName").value = session.fullName;
+  document.getElementById("profileEmail").value = session.email;
+  return session;
+}
+
 function renderEnrolled(){
   // Démo : on simule un module en cours (le module gratuit). Point d'intégration : remplacer par les vraies inscriptions utilisateur.
   const demo = [{ course: COURSES[0], progress: 35 }];
@@ -133,7 +147,10 @@ document.querySelectorAll(".account-nav a[data-tab]").forEach(link => {
   });
 });
 
-document.addEventListener("DOMContentLoaded", renderEnrolled);
+document.addEventListener("DOMContentLoaded", () => {
+  const session = requireSessionOrRedirect();
+  if(session) renderEnrolled();
+});
 </script>
 </body>
 </html>
